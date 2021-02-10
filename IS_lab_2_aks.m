@@ -13,6 +13,7 @@
 clc; clear; close all;
 
 % Instruktažas:
+%%% Žr. IMG_20201021_181308.jpg schemą dešinėje ir formules
 % 1. Duomenų mokymui paruošimas(atranka)
 % x = 0.1:1/22:1;
 % d = (1 + 0.6 * sin(2*pi*x/0.7)) + 0.3 * sin(2*pi*x) / 2;
@@ -47,27 +48,50 @@ clc; clear; close all;
 %
 %%%%% generuojame pvz 10000 kartų
 
-
-
-% 1. Duomenų mokymui paruošimas(atranka)
-x = 0.1:1/22:1;
-d = (1 + 0.6 * sin(2*pi*x/0.7)) + 0.3 * sin(2*pi*x) / 2;
-
 %%%nusipiešiam funkciją pagal kurią reikės orientuotis 
 plot ( x, d );
 
 disp(x');
-disp('skaičiuosime su keturiais neuronais paslėptame sluoksnyje');
+disp('pasirenkame keturis neuronais paslėptame sluoksnyje');
+disp('aktyvavimo funkcija y1_1=1/(1+exp(-(v1_1))');
+
+% 1. Duomenų mokymui paruošimas(atranka)
+% x = 0.1:1/22:1;
+% d = (1 + 0.6 * sin(2*pi*x/0.7)) + 0.3 * sin(2*pi*x) / 2;
+x = 0.1:1/22:1;
+d = (1 + 0.6 * sin(2*pi*x/0.7)) + 0.3 * sin(2*pi*x) / 2;
+
+
+% 2. skaičiuojame tinklo atsaką
+% 2.1 Susigeneruojame rand W1_1, W2_1, W3_1, W4_1, W1_2, W2_2, W3_2, W4_2, b1_1, b2_1;
+disp('generuojame pseudorand w1, w2 ir b');
+
+w11 = randn(1);
+w21 = randn(1);
+w31 = randn(1);
+w41 = randn(1);
+
+w12 = randn(1);
+w22 = randn(1);
+w32 = randn(1);
+w42 = randn(1);
+
+b11 = randn(1);
+b21 = randn(1);
+b31 = randn(1);
+b41 = randn(1);
+
+b1_2 = randn(1);
 
 
 
-%%% Žr. IMG_20201021_181308.jpg schemą dešinėje
+
 %pirmas sluoksnis
 %antras sluoksnis
 
-disp('aktyvavimo funkcija y1_1=1/(1+exp(-(v1_1))');
+
 disp('skaičiuojam pirmąjį sluoksnį:');
-disk('
+
 
 
 
