@@ -16,8 +16,11 @@ x = 0.1:1/22:1;
 d = (1 + 0.6 * sin(2*pi*x/0.7)) + 0.3 * sin(2*pi*x) / 2;
 plot ( x, d );
 
-
+disp(x');
+disp('skaičiuosime su keturiais neuronais paslėptame sluoksnyje');
+%%% Žr. IMG_20201021_181308.jpg schemą dešinėje
 %pirmas sluoksnis
+%antras sluoksnis
 
 
 
