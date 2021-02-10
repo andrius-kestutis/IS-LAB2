@@ -136,5 +136,20 @@ b1_2 = b1_2 + n * delta_out ;
 % delta1=Fi1' * delta_out *W1_2
 % Fi1'= 1/(1+exp(-v))=y1_1(1-y1_1);
 
+delta1 = (y11 * (1-y11)) * delta_out * w12;
+delta2 = (y21 * (1-y21)) * delta_out * w22;
+delta3 = (y31 * (1-y31)) * delta_out * w32;
+delta4 = (y41 * (1-y41)) * delta_out * w42;
 
-    
+
+w11 = w11 + n * delta1 * x;
+w21 = w21 + n * delta2 * x;
+w31 = w31 + n * delta3 * x;
+w41 = w41 + n * delta4 * x;
+
+b11 = b11 + n * delta1;
+b21 = b21 + n * delta2;
+b31 = b31 + n * delta3;
+b41 = b41 + n * delta4;
+
+
