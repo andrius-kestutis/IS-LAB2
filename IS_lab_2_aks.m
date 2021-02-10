@@ -64,9 +64,9 @@ d = (1 + 0.6 * sin(2*pi*x/0.7)) + 0.3 * sin(2*pi*x) / 2;
 
 % 2. skaičiuojame tinklo atsaką
 % 2.1 Susigeneruojame rand W1_1, W2_1, W3_1, W4_1, W1_2, W2_2, W3_2, W4_2, b1_1, b2_1;
-disp('generuojame pseudorand w1, w2 ir b');
+disp('generuojame rand w1, w2 ir b');
 
-w11 = randn(1);
+w11 = randn(1);  
 w21 = randn(1);
 w31 = randn(1);
 w41 = randn(1);
@@ -81,12 +81,31 @@ b21 = randn(1);
 b31 = randn(1);
 b41 = randn(1);
 
-b1_2 = randn(1);
+b12 = randn(1);
+
+% 2.2 Skaičiuojame pirmo sluoksnio išėjimus:
+% 2.2.1. V1_1=x(1)*w1_1+b1_1;
+%        V2_1=x(1)*w2_1+b2_1;
+%        <...>
+v11=x*w11+b11;
+v21=x*w21+b21;
+v31=x*w31+b31;
+v41=x*w41+b41;
+
+% 2.2.2 pritaikome aktyvacijos funkciją:
+% Y1_1=1/(1+exp(-v1_1));
+% Y2.1=1/(1+exp(-v2_1));
+% <..>
+y11=1/(1+exp(-v1_1));
+y21=1/(1+exp(-v2_1));
+y31=1/(1+exp(-v3_1));
+y41=1/(1+exp(-v4_1));
+
+% 2.3 skaičiuojame antro sluoksnio išėjimus:
+%  Y=V=Y1_1*w1_2+y2_1*w2_2+Y3_1*w3_2+..+b1_2;
 
 
 
-
-%pirmas sluoksnis
 %antras sluoksnis
 
 
