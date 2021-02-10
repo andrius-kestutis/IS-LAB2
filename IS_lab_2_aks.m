@@ -51,17 +51,17 @@ clc; clear; close all;
 %%%%% generuojame pvz 10000 kartų
 
 %%%nusipiešiam funkciją pagal kurią reikės orientuotis 
-plot ( x, d );
 
-disp(x');
 disp('pasirenkame keturis neuronais paslėptame sluoksnyje');
 disp('aktyvavimo funkcija y1_1=1/(1+exp(-(v1_1))');
 
 % 1. Duomenų mokymui paruošimas(atranka)
 % x = 0.1:1/22:1;
 % d = (1 + 0.6 * sin(2*pi*x/0.7)) + 0.3 * sin(2*pi*x) / 2;
-x = 0.1:1/22:1;
-d = (1 + 0.6 * sin(2*pi*x/0.7)) + 0.3 * sin(2*pi*x) / 2;
+z = 0.1:1/22:1;
+d = (1 + 0.6 * sin(2*pi*z/0.7)) + 0.3 * sin(2*pi*z) / 2;
+plot ( z, d );
+disp(z');
 
 
 % 2. skaičiuojame tinklo atsaką
@@ -88,68 +88,77 @@ b12 = randn(1);
 disp('sugeneruoti rand w1, w2 ir b');
 
 disp('skaičiuojam pirmąjį sluoksnį:');
-% 2.2 Skaičiuojame pirmo sluoksnio išėjimus:
-% 2.2.1. V1_1=x(1)*w1_1+b1_1;
-%        V2_1=x(1)*w2_1+b2_1;
-%        <...>
-v11=x*w11+b11;
-v21=x*w21+b21;
-v31=x*w31+b31;
-v41=x*w41+b41;
+disp('kartojam iteracijas');
+disp('dėliojame taškus praeinant per visą X skalę');
 
-% 2.2.2 pritaikome aktyvacijos funkciją:
-% Y1_1=1/(1+exp(-v1_1));
-% Y2.1=1/(1+exp(-v2_1));
-% <..>
-y11=1/(1+exp(-v1_1));
-y21=1/(1+exp(-v2_1));
-y31=1/(1+exp(-v3_1));
-y41=1/(1+exp(-v4_1));
-
-
-% 2.3 skaičiuojame antro sluoksnio išėjimus:
-%  Y=V=Y1_1*w1_2+y2_1*w2_2+Y3_1*w3_2+..+b1_2;
-
-Y = V = y11 * w12 + y21 * w22 + y31 * w32 + y41 * w42 + b12;
-
-% 2.4 skaičiuojame klaidą:
-% e=d-y;
-e=d-y;
-
-% 3. atnaujiname koeficientus:  n=bet koks (psueorandom) pvz n=0.1
-% 3.1. w=w+n*delta*y_in;
-% delta_out=e;
-% w1_2=w1_2+n*delta_out*y1_1;
-% w2_2=w2_2+n*delta_out*y2_1;
-% w3_2=w2_2+n*delta_out*y3_1;
-% w4_2=w2_2+n*delta_out*y4_1;
-% b1_2=b1_2+n*delta_out;
-% 
-delta_out=e;
-w12 = w12 + n * delta_out * y11;
-w22 = w22 + n * delta_out * y21;
-w32 = w32 + n * delta_out * y31 ;
-w42 = w42 + n * delta_out * y41 ;
-b1_2 = b1_2 + n * delta_out ;
-
-% 3.2 Pirmo sluoksnio koeficientų atnaujinimas:
-% delta1=Fi1' * delta_out *W1_2
-% Fi1'= 1/(1+exp(-v))=y1_1(1-y1_1);
-
-delta1 = (y11 * (1-y11)) * delta_out * w12;
-delta2 = (y21 * (1-y21)) * delta_out * w22;
-delta3 = (y31 * (1-y31)) * delta_out * w32;
-delta4 = (y41 * (1-y41)) * delta_out * w42;
-
-
-w11 = w11 + n * delta1 * x;
-w21 = w21 + n * delta2 * x;
-w31 = w31 + n * delta3 * x;
-w41 = w41 + n * delta4 * x;
-
-b11 = b11 + n * delta1;
-b21 = b21 + n * delta2;
-b31 = b31 + n * delta3;
-b41 = b41 + n * delta4;
-
+for iteracija=0:1:100    %pradedame nuo 100, 1000, 10000
+ for x = 0.1:1/22:1
+    
+     d = (1 + 0.6*sin(2*pi*x/0.7)) + 0.3*sin(2*pi*x)/2;
+     % 2.2 Skaičiuojame pirmo sluoksnio išėjimus:
+     % 2.2.1. V1_1=x(1)*w1_1+b1_1;
+     %        <...>
+     v11=x*w11+b11;
+     v21=x*w21+b21;
+     v31=x*w31+b31;
+     v41=x*w41+b41;
+     
+     % 2.2.2 pritaikome aktyvacijos funkciją:
+     % Y1_1=1/(1+exp(-v1_1));
+     % Y2.1=1/(1+exp(-v2_1));
+     % <..>
+     y11=1/(1+exp(-v11));
+     y21=1/(1+exp(-v21));
+     y31=1/(1+exp(-v31));
+     y41=1/(1+exp(-v41));
+     
+     
+     % 2.3 skaičiuojame antro sluoksnio išėjimus:
+     %  Y=V=Y1_1*w1_2+y2_1*w2_2+Y3_1*w3_2+..+b1_2;
+     
+     v = y11 * w12 + y21 * w22 + y31 * w32 + y41 * w42 + b12;
+     y=v
+      
+     % 2.4 skaičiuojame klaidą:
+     % e=d-y;
+     e=d-y;
+     
+     % 3. atnaujiname koeficientus:  n=bet koks (psueorandom) pvz n=0.1
+     % 3.1. w=w+n*delta*y_in;
+     % delta_out=e;
+     % w1_2=w1_2+n*delta_out*y1_1;
+     % w2_2=w2_2+n*delta_out*y2_1;
+     % w3_2=w2_2+n*delta_out*y3_1;
+     % w4_2=w2_2+n*delta_out*y4_1;
+     % b1_2=b1_2+n*delta_out;
+     %
+     n=0.1;
+     delta_out=e;
+     w12 = w12 + n * delta_out * y11;
+     w22 = w22 + n * delta_out * y21;
+     w32 = w32 + n * delta_out * y31 ;
+     w42 = w42 + n * delta_out * y41 ;
+     b12 = b12 + n * delta_out ;
+     
+     % 3.2 Pirmo sluoksnio koeficientų atnaujinimas:
+     % delta1=Fi1' * delta_out *W1_2
+     % Fi1'= 1/(1+exp(-v))=y1_1(1-y1_1);
+     
+     delta1 = (y11 * (1-y11)) * delta_out * w12;
+     delta2 = (y21 * (1-y21)) * delta_out * w22;
+     delta3 = (y31 * (1-y31)) * delta_out * w32;
+     delta4 = (y41 * (1-y41)) * delta_out * w42;
+     
+     
+     w11 = w11 + n * delta1 * x;
+     w21 = w21 + n * delta2 * x;
+     w31 = w31 + n * delta3 * x;
+     w41 = w41 + n * delta4 * x;
+     
+     b11 = b11 + n * delta1;
+     b21 = b21 + n * delta2;
+     b31 = b31 + n * delta3;
+     b41 = b41 + n * delta4;
+ end
+end
 
