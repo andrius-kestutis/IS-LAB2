@@ -61,7 +61,7 @@ disp('aktyvavimo funkcija y1_1=1/(1+exp(-(v1_1))');
 z = 0.1:1/22:1;
 d = (1 + 0.6 * sin(2*pi*z/0.7)) + 0.3 * sin(2*pi*z) / 2;
 plot ( z, d );
-disp(z');
+%disp(z');
 
 
 % 2. skaičiuojame tinklo atsaką
@@ -91,7 +91,7 @@ disp('skaičiuojam pirmąjį sluoksnį:');
 disp('kartojam iteracijas');
 disp('dėliojame taškus praeinant per visą X skalę');
 
-for iteracija=0:1:100    %pradedame nuo 100, 1000, 10000
+for iteracija=0:1:1000    %pradedame nuo 100, 1000, 10000, 100000
  for x = 0.1:1/22:1
     
      d = (1 + 0.6*sin(2*pi*x/0.7)) + 0.3*sin(2*pi*x)/2;
@@ -117,7 +117,7 @@ for iteracija=0:1:100    %pradedame nuo 100, 1000, 10000
      %  Y=V=Y1_1*w1_2+y2_1*w2_2+Y3_1*w3_2+..+b1_2;
      
      v = y11 * w12 + y21 * w22 + y31 * w32 + y41 * w42 + b12;
-     y=v
+     y=v;
       
      % 2.4 skaičiuojame klaidą:
      % e=d-y;
@@ -132,7 +132,7 @@ for iteracija=0:1:100    %pradedame nuo 100, 1000, 10000
      % w4_2=w2_2+n*delta_out*y4_1;
      % b1_2=b1_2+n*delta_out;
      %
-     n=0.1;
+     n=0.1;   %%%%%%%%%%%%%%%%%% 0.9 visus koeficientus NaN verčia
      delta_out=e;
      w12 = w12 + n * delta_out * y11;
      w22 = w22 + n * delta_out * y21;
@@ -161,4 +161,46 @@ for iteracija=0:1:100    %pradedame nuo 100, 1000, 10000
      b41 = b41 + n * delta4;
  end
 end
+
+
+%%%%% patikriname ar ką nors padaro
+rezultatas_y = []; 
+
+
+for x = 0.1:1/22:1
+    d = (1 + 0.6 * sin(2*pi*x/0.7)) + 0.3 * sin(2*pi*x) / 2;
+    % 2.2 Skaičiuojame pirmo sluoksnio išėjimus:
+    % 2.2.1. V1_1=x(1)*w1_1+b1_1;
+    %        <...>
+    v11=x*w11+b11;
+    v21=x*w21+b21;
+    v31=x*w31+b31;
+    v41=x*w41+b41;
+
+    % 2.2.2 pritaikome aktyvacijos funkciją:
+    % Y1_1=1/(1+exp(-v1_1));
+    % Y2.1=1/(1+exp(-v2_1));
+    % <..>
+    y11=1/(1+exp(-v11));
+    y21=1/(1+exp(-v21));
+    y31=1/(1+exp(-v31));
+    y41=1/(1+exp(-v41));
+    % 2.3 skaičiuojame antro sluoksnio išėjimus:
+    %  Y=V=Y1_1*w1_2+y2_1*w2_2+Y3_1*w3_2+..+b1_2;
+    y = y11 * w12 + y21 * w22 + y31 * w32 + y41 * w42 + b12;
+    rezultatas_y = [rezultatas_y, y];        %%%% surašom vertes po vieną į galą
+end
+
+
+disp('rezultatas');disp(rezultatas_y'); 
+%palyginame su etalonine funkcija
+paklaida=abs(rezultatas_y -d) ;
+
+disp('paklaida');disp(paklaida);
+
+vaizdavimas =[];
+ vaizdavimas=[vaizdavimas;rezultatas_y'];
+ vaizdavimas=[vaizdavimas;paklaida'];
+ disp('vaizdavimas');disp(vaizdavimas);
+
 
